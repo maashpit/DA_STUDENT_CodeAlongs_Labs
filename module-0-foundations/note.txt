@@ -1,1 +1,5 @@
 Great class today, the git demo finally clicked for me!
+Great class today, the git demo finally clicked for me! \n This is a new line.
+\nThis is another new line
+n this is another new line.
+ this is another new line 3
