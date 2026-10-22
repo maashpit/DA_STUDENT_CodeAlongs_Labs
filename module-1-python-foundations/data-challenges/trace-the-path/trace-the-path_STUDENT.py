@@ -43,19 +43,19 @@ SUBMIT
 ############################################################################
 
 # 1. What does one row represent?
-# Your answer:
-#
+# Your answer: Each row represents a different worker on a different day/event of the week
+# The dataset lists the workers for each day as well as how many hours 
 #
 
 # 2. Which fields hold numbers, and which hold text?
-# Your answer:
-#
+# Your answer: The hours column holds numbers 
+# The volunter and day column holds text
 #
 
 # 3. What already looks wrong, missing or inconsistent?
-# Your answer:
-#
-#
+# Your answer: The way that this data is listed, I can't immediately tell 
+# who is working on what days. There is also no Saturday or Sunday listed, but
+# I can make an educated guess that the community center is closed.
 
 ############################################################################
 #  DAY 1
@@ -84,23 +84,31 @@ SUBMIT
 # If the two differ, say which line you mis-read. Do not edit the
 # prediction.
 
-with open("data/volunteer_shifts.txt") as f:
+with open("volunteer_shifts.txt") as f:
     shifts = [line for line in f.read().splitlines()
               if line and not line.startswith("#")]
+
+# My prediction: 5 
 
 long_shifts = 0
 for shift in shifts:
     hours = int(shift.split(",")[2])
     # TODO: write the test for a long shift. The coordinator counts a
     #       shift of 4 hours or more.
-    if None:
+    if hours >= 4:
         # TODO: this is the counting line. Move long_shifts on by one.
-        long_shifts = None
+        long_shifts = long_shifts + 1
 
 print("shifts of 4+ hours:", long_shifts)
 
 # Your answer:
-#
+# # Your answer:
+# - I ran "Amara,Mon,3".split(",") and got: ['Amara', 'Mon', '3']
+# - .split() hands back a list of the pieces of the text you gave it.
+# - The character inside the parentheses is the delimiter: split cuts the
+#   text at each one and removes it. Every piece comes back as text, even numbers.
+# - Similar to cut -d in the terminal, but Python counts from 0 and cut counts from 1.
+# - My prediction was 5 and the code printed 5, so it matched.
 #
 
 # ===== Step 2: Total the Week's Hours, Printing the Running Total Each Pass =====
@@ -150,7 +158,25 @@ print("total hours logged this week:", total)
 # Be ready to answer "why did you do it that way?"
 
 # Your notes for the share out:
-#
+# - Predictions: Step 1 = 5 long shifts, Step 2 = 37 total hours and 12 printed
+#   lines. They matched when I ran the code, but getting there was hard for me.
+# - Where I struggled: .split() was the hardest part. At first I thought:
+#     * the '3' was a number. It's text, because of the quotes, which is why
+#       the code needs int().
+#     * the commas were still there after splitting. They get removed. The
+#       commas in the output are just how Python shows a list.
+#     * split was the delimiter. split is the tool, and the comma is the delimiter.
+#   It clicked when I connected it to cut -d from the terminal, since it's the
+#   same idea.
+# - I also had trouble turning the rules into code (like "4 or more" into
+#   >= 4). I learn better by seeing a finished answer first and working
+#   backward to understand each line, so I used AI that way and then traced
+#   through why each piece works.
+# - Data observations: each row is one completed shift (volunteer, day, hours).
+#   The first two lines are comments, not shifts. No Saturday or Sunday, and
+#   not every volunteer works every day.
+# - How I traced it: Step 2 prints one line per pass, so I could watch the
+#   total change. On 430 rows I'd use that instead of holding it in my head.
 #
 
 ############################################################################
