@@ -243,6 +243,10 @@ print(len(volunteers), "volunteers x", len(days), "days =", checks)
 # Both loops run clean, with no traceback from either. Only one of them is
 # right.
 
+# My prediction: range(len(shifts) - 1) is range(11), so i goes from 0 to 10.
+# The buggy loop visits 11 rows and never reaches index 11, the last row
+# (Priya,Fri,2).
+
 buggy_seen = 0
 for i in range(len(shifts) - 1):
     buggy_seen = buggy_seen + 1
@@ -250,7 +254,7 @@ for i in range(len(shifts) - 1):
 fixed_seen = 0
 # TODO: write the loop header that visits EVERY row, not all but one.
 #       The body below is already correct. Only the range changes.
-for i in None:
+for i in range(len(shifts)):
     fixed_seen = fixed_seen + 1
 
 print("rows in the file:   ", len(shifts))
@@ -258,7 +262,7 @@ print("buggy loop visited: ", buggy_seen)
 print("fixed loop visited: ", fixed_seen)
 # TODO: print the one row the buggy loop never reached. Reach into the
 #       list by position; do not retype the row by hand.
-print("the row it never saw:", None)
+print("the row it never saw:", shifts[-1])
 
 # ----- Share Out: Day 2 -----
 # Last 15 minutes, back together as a class. Bring:
