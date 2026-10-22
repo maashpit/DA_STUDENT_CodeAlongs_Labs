@@ -129,15 +129,17 @@ print("shifts of 4+ hours:", long_shifts)
 #
 # That printed line per pass is a tracing tool, not decoration.
 
+# My prediction: total hours = 37, lines printed = 12
+
 total = 0
 for shift in shifts:
     volunteer, day, hours = shift.split(",")
     # TODO: add this shift's hours onto the running total. Mind the
     #       type: everything that came out of that split is a string.
-    total = None
+    total = total + int(hours)
     # TODO: print one line per pass: the day, the volunteer, and the
     #       total so far. This printed line IS the tracing tool.
-    print(day, volunteer, "| running total:", None)
+    print(day, volunteer, "| running total:", total)
 
 print("total hours logged this week:", total)
 
@@ -201,21 +203,23 @@ print("total hours logged this week:", total)
 # If your prediction was a number of records rather than a number of pairs,
 # that gap is the thing to bring to the shareout.
 
+# My prediction: 4 x 5 = 20
+
 volunteers = []
 days = []
 for shift in shifts:
     volunteer, day, hours = shift.split(",")
     # TODO: only append a volunteer this list does not already have.
-    if None:
+    if volunteer not in volunteers:
         volunteers.append(volunteer)
     # TODO: the same test again, for the day.
-    if None:
+    if day not in days:
         days.append(day)
 
 checks = 0
 for volunteer in volunteers:
     # TODO: the inner loop. One pass per weekday, for each volunteer.
-    for day in None:
+    for day in days:
         checks = checks + 1
 
 print(len(volunteers), "volunteers x", len(days), "days =", checks)
