@@ -34,6 +34,9 @@ fill it in before you run the file again.
 print('----- 1. Nested Loop, Live -----')
 # TODO: write a nested loop that prints every (row, col)
 # pair for row in range(2) and col in range(3)
+for row in range(2):
+    for col in range(3):
+        print(row, col)
 
 # PREDICT before you run: Change the Nested Loop code to range(3) on the
 #                         outside and range(2) on the inside. How many lines

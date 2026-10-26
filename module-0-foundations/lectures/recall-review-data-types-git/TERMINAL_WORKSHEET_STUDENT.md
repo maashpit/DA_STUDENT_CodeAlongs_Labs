@@ -37,3 +37,17 @@ No new material today - just you, testing your own memory. You'll work through t
 # TODO: from memory, no notes - print where you are, list what's
 # here, and move into a folder
 ```
+mkdir financial_analysis
+
+cd 
+touch "README.md"
+echo "new message" >> README.md
+git init
+git add README.md
+git status
+git commit -m "info on new changes"
+git status
+git remote add origin url
+git push -u origin master
+git status
+git log
