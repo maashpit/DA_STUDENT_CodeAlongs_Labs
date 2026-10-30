@@ -4,7 +4,6 @@
 import json
 
 DATA_FILE = "../data/station_taps.csv"  # edit the filepath with the data
-
 with open(DATA_FILE) as f:
     rows = [line.split(",") for line in f.read().splitlines() if line]
 
@@ -72,6 +71,7 @@ print("pair loop on", big, "rows:", big * big)
 
 # ===== Day 2 =====
 
+# Step 3: Count Taps Per Card With Two Parallel Lists, and Their Comparisons
 # TODO: assign `card_ids` to an empty list (each card, first-seen order)
 card_ids = []
 # TODO: assign `tap_counts` to an empty list (the count for card_ids[i])
@@ -110,6 +110,7 @@ print("busiest card:", card_ids[busiest], "with", max(tap_counts), "taps")
 # not just one step per row.
 
 
+# Step 4: Count Taps Per Card With a Dictionary, and Stations With a Set
 # TODO: assign `taps_by_card` to an empty dict (card ID: tap count)
 taps_by_card = {}
 # TODO: assign `lookups` to 0
@@ -140,29 +141,27 @@ print("unique stations:", len(stations), sorted(stations))
 print("cards that tapped more than once:", repeat_riders)
 print("taps for C001:", taps_by_card["C001"])
 
-# TODO: assign `taps_by_card` to an empty dict (card ID: tap count)
-taps_by_card = {}
-# TODO: assign `lookups` to 0
-lookups = 0
-# TODO: loop over `taps`; add 1 to `lookups`
-for row in taps:
-    lookups += 1
-# TODO: add 1 to row[1]'s count in `taps_by_card`, or set it to 1 if new
-    card = row[1]
-    if card in taps_by_card:
-        taps_by_card[card] += 1
-    else:
-        taps_by_card[card] = 1
-# TODO: assign `stations` to set(); loop over `taps` and .add() row[2]
-stations = set()
-for row in taps:
-    stations.add(row[2])
-# TODO: assign `repeat_riders` to 0
-repeat_riders = 0
-# TODO: loop over `taps_by_card`; add 1 to `repeat_riders` if a count is > 1
-for card in taps_by_card:
-    if taps_by_card[card] > 1:
-        repeat_riders += 1
+# Step 4, answer 1:
+# 40 lookups. A dictionary goes straight to the key, so it's one lookup per row,
+# and there are 40 rows.
+#
+# Step 4, answer 2:
+# As the Input Size grows, the parallel lists' work grows much faster than the rows,
+# because every row has to scan a list that keeps getting longer.
+# As the Input Size grows, the dictionary's work grows at the same rate as the rows,
+# one lookup each.
+#
+# Step 4, answer 3:
+# taps_by_card (Dictionary): counts taps per card; finds a card directly by its ID.
+# stations (Set): keeps unique stations; adding a repeat just does nothing.
+# A list for stations would need an "if not in" scan before every add, so the
+# more stations there are, the more checks each row costs.
+#
+# Step 4, answer 4:
+# C012. There are 12 distinct cards but only 11 repeat riders, because C012
+# only tapped once.
+
+
 
 
 # ===== Day 3 =====
@@ -196,9 +195,13 @@ print("about to serialize", len(summary), "keys")
 
 # Step 6: Write `tap_summary.json`, Reload It, and Check Which Types Survived
 # TODO: assign summary["stations"] to a type JSON can hold; keep the key
+summary["stations"] = sorted(stations)
 # TODO: json.dump() `summary` into a with open("tap_summary.json", "w")
+with open("tap_summary.json", "w") as f:
+    json.dump(summary, f, indent=2)
 # TODO: replace None with json.load() of "tap_summary.json"
-reloaded = None
+with open("tap_summary.json") as f:
+    reloaded = json.load(f)
 
 print("total_taps came back as:", reloaded["total_taps"])
 print("taps_by_card came back as a", type(reloaded["taps_by_card"]).__name__)
@@ -207,6 +210,9 @@ print("stations came back as a", type(reloaded["stations"]).__name__)
 print("round trip identical:", reloaded["taps_by_card"] == taps_by_card)
 
 # Step 6, answer 1:
+# Yes. reloaded["taps_by_card"]["C001"] gives 6 straight from tap_summary.json,
+# without opening the raw CSV.
 #
 # Step 6, answer 2:
-#
+# taps_by_card survived ("round trip identical: True"). stations came back as a
+# list, not a set, so it lost the set's job: it would now let duplicates in.
