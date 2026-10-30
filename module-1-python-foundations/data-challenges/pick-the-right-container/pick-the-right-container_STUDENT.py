@@ -216,3 +216,26 @@ print("round trip identical:", reloaded["taps_by_card"] == taps_by_card)
 # Step 6, answer 2:
 # taps_by_card survived ("round trip identical: True"). stations came back as a
 # list, not a set, so it lost the set's job: it would now let duplicates in.
+
+# ===== Personal Reflection: How This Data Gets Used in Real Life =====
+#
+# This data is the kind of thing a transit agency like the MTA collects every
+# day. Our file only had 40 taps, but a real agency would have millions.
+#
+# I think a few different teams would actually use this:
+# - Planners could use the busiest stations and times to decide where to add
+#   more trains or staff during rush hour.
+# - The fare team could look at repeat riders to figure out if weekly or
+#   monthly passes are worth offering.
+# - Operations could watch for a station that suddenly gets a lot more taps
+#   than normal, since that could mean an event or a problem.
+#
+# This challenge showed me why picking the right container matters. With 40
+# rows the list and the dictionary both worked fine, but the list needed 190
+# comparisons and the dictionary only needed 40 lookups. At millions of taps,
+# that gap would be the difference between a report that runs overnight and
+# one that doesn't finish. Saving the summary as JSON also matters, because
+# that's how the results get passed to another program, like a dashboard.
+#
+# One thing I'd keep in mind is privacy. A card ID can show someone's daily
+# routine, so this data would need to be protected before anyone uses it.
