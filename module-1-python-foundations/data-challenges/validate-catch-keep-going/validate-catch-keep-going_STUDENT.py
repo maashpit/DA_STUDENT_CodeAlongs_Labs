@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Validate, Catch, Keep Going: see DataChallengeOverview&Steps.md."""
 
-DATA_FILE = "service_requests.csv"  # edit the filepath with the data
+DATA_FILE = "../data/service_requests.csv"  # edit the filepath with the data
 
 with open(DATA_FILE) as f:
     lines = f.read().splitlines()
@@ -14,19 +14,26 @@ rows = [line for line in lines[1:] if line]
 
 # Step 1: Write `validate_request()` to Return a Verdict and a Reason
 # TODO: assign `EXPECTED_FIELDS` to 5
+EXPECTED_FIELDS = 5
 # TODO: assign `ALLOWED_STATUS` to ["Open", "In Progress", "Closed"]
-
-
-def validate_request(row):
+ALLOWED_STATUS = ["Open", "In Progress", "Closed"]
     # TODO: assign `fields` to `row` split on commas
-    if len(fields) != EXPECTED_FIELDS:
-        return False, "wrong field count: " + str(len(fields))
     # TODO: unpack `fields` into the five names in the CSV header
     # TODO: if `borough` is empty, return False and "borough is empty"
-    # TODO: if `status` is not in ALLOWED_STATUS, return False and a reason
+# TODO: if `status` is not in ALLOWED_STATUS, return False and a reason
     # TODO: make that reason "status not allowed: " plus `status`
     # TODO: return True and "ok"
-    pass
+
+def validate_request(row):
+    fields = row.split(",")
+    if len(fields) != EXPECTED_FIELDS:
+        return False, "wrong field count: " + str(len(fields))
+    request_id, complaint_type, borough, days_open, status = fields
+    if borough == "":
+        return False, "borough is empty"
+    if status not in ALLOWED_STATUS:
+        return False, "status not allowed: " + status
+    return True, "ok"
 
 
 print(validate_request("SR-1001,Noise - Residential,Brooklyn,3,Closed"))
@@ -45,9 +52,9 @@ print(validate_request("SR-1009,Water System,Queens,4,Escalated"))
 # TODO: if `ok`, add 1 to `valid`
 # TODO: else print row.split(",")[0], "REJECTED -" and `reason`
 
-print("header:", header)
-print("rows read:", len(rows))
-print("passed Day 1 validation:", valid)
+#print("header:", header)
+#print("rows read:", len(rows))
+#print("passed Day 1 validation:", valid)
 
 # Step 2, answer 1:
 #
