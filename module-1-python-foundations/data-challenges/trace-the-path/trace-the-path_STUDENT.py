@@ -102,7 +102,7 @@ for shift in shifts:
 print("shifts of 4+ hours:", long_shifts)
 
 # Your answer:
-# # Your answer:
+#
 # - I ran "Amara,Mon,3".split(",") and got: ['Amara', 'Mon', '3']
 # - .split() hands back a list of the pieces of the text you gave it.
 # - The character inside the parentheses is the delimiter: split cuts the
@@ -283,5 +283,18 @@ print("the row it never saw:", shifts[-1])
 # Be ready to answer "why did you do it that way?"
 
 # Your notes for the share out:
-#
-#
+# - Pair prediction: 4 x 5 = 20. That's pairs, not rows. The file only has
+#   12 shift rows, and the grid has 20 cells, so 8 slots nobody covered.
+#   The code counted pairs.
+# - Nested loops were new for me. What helped: the inner loop runs all the
+#   way through for EACH pass of the outer loop, so total = outer x inner.
+# - Off-by-one: I found it by reading the range. range(len(shifts) - 1)
+#   stops at 10, so it never reaches index 11. On a long file I'd trust
+#   reading the range plus printing the counts, not eyeballing the output,
+#   because the buggy loop runs with no error.
+# - AI and range(): AI said range stops BEFORE the stop number. I checked
+#   the Python docs for range, and they say the same thing. My own count
+#   matched: 11 visits instead of 12.
+# - What I'd do differently: slow down on new tools like .split() and test
+#   them on one line first. Also, the FileNotFoundError happened because the
+#   data file got moved out of the data/ folder, so I'd check file paths first.
