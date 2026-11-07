@@ -44,18 +44,21 @@ SUBMIT
 
 # 1. What does one row represent?
 # Your answer:
-#
-#
+# Each row is one person signing up for one class, and how many sessions
+# they booked. Like "Nia,Yoga,4" is just Nia doing Yoga for 4 sessions.
 
 # 2. Which fields hold numbers, and which hold text?
 # Your answer:
-#
-#
+# The name and the class are text. Sessions is a number, but Python reads
+# it in as text, so I have to wrap it in int() before I can add anything.
 
 # 3. What already looks wrong, missing or inconsistent?
 # Your answer:
-#
-#
+# Nothing's blank or broken this time. The top two lines are just # notes,
+# not real data, so those get skipped. The other thing is people show up
+# more than once and there's no ID, so the name is the only way to match
+# them. If someone typed "nia" instead of "Nia" it'd count as a whole
+# different person.
 
 ############################################################################
 #  DAY 1
@@ -78,17 +81,26 @@ SUBMIT
 # The arithmetic is the same arithmetic a plain loop would do. What changes
 # is that the answer comes back to you instead of going to the screen.
 
-with open("data/rec_center_signups.txt") as f:
+# Prediction: I added up the whole sessions column and got 45.
+# Prediction: Swim only is Omar 2, Rafi 5, Nia 2, Gwen 6, so 15.
+
+with open("../data/rec_center_signups.txt") as f:
     signups = [line for line in f.read().splitlines()
                if line and not line.startswith("#")]
 
 def total_sessions(records):
     # TODO: add up the sessions column across every record in `records`
+    total = 0
+    for record in records:
+        total += int(record.split(",")[2])
     # TODO: hand the total back to whoever called this. Do not print it.
-    pass
+    return total
 
 swim_only = []
 # TODO: fill swim_only with just the Swim records
+for record in signups:
+    if record.split(",")[1] == "Swim":
+        swim_only.append(record)
 
 print("every class:", total_sessions(signups))
 print("swim only:  ", total_sessions(swim_only))
@@ -113,14 +125,23 @@ print("swim only:  ", total_sessions(swim_only))
 # One of the two functions you just wrote gives you something back. The
 # other only puts something on the screen.
 
+# Prediction: 4 or more should be 7. The only ones under 4 are the 1s,
+# the 2s and Omar's 3.
+# Prediction: 2 or more should be 11. Everything except the two 1s.
+
 def count_long_bookings(records, minimum):
     # TODO: count the records whose sessions number is `minimum` or more
+    count = 0
+    for record in records:
+        if int(record.split(",")[2]) >= minimum:
+            count += 1
     # TODO: return the count
-    pass
+    return count
 
 def show_long_bookings(records, minimum):
     # TODO: print a sentence with the same count in it. Only print.
-    pass
+    print(count_long_bookings(records, minimum), "bookings have",
+          minimum, "or more sessions")
 
 print("returned:", count_long_bookings(signups, 4))
 print("returned:", count_long_bookings(signups, 2))
@@ -129,8 +150,10 @@ handed_back = show_long_bookings(signups, 4)
 print("what show_long_bookings handed back:", handed_back)
 
 # Your answer:
-#
-#
+# handed_back is None. show_long_bookings prints the number on the screen
+# but never returns it, so there's nothing to hand back.
+# minimum is the parameter, it's the name up in the def line. The 4 and
+# the 2 are the arguments, they're what I actually pass in when I call it.
 
 # ----- Share Out: Day 1 -----
 # Last 15 minutes, back together as a class. Bring:
@@ -148,8 +171,12 @@ print("what show_long_bookings handed back:", handed_back)
 # Be ready to answer "why did you do it that way?"
 
 # Your notes for the share out:
-#
-#
+# I got 45 for everything and 15 for Swim.
+# What got easier is I didn't have to write the loop twice. For Swim I just
+# called the same function on a smaller list. When the cutoff changed I
+# just changed the number I passed in, no new function.
+# Print just shows you the number. Return actually gives it back so you can
+# save it or use it somewhere else.
 
 ############################################################################
 #  DAY 2
@@ -175,19 +202,29 @@ print("what show_long_bookings handed back:", handed_back)
 # Both versions run clean. Decide which of the two you would trust in a file
 # you did not write, and say what in the call line told you.
 
+# Prediction: First one prints 7, second one prints 11. The lines look the
+# exact same, but the function grabs sessions_cutoff from outside, and that
+# got switched from 4 to 2 in between the two calls.
+
 sessions_cutoff = 4
 
 def count_reaching_outside(records):
     # TODO: same count as count_long_bookings, but take NO minimum
     # parameter. Read sessions_cutoff from outside the function instead.
-    pass
+    count = 0
+    for record in records:
+        if int(record.split(",")[2]) >= sessions_cutoff:
+            count += 1
+    return count
 
 print("cutoff", sessions_cutoff, "gives", count_reaching_outside(signups))
 
 sessions_cutoff = 2
 
 # TODO: call count_reaching_outside(signups) again, unchanged, and print it
+print("cutoff", sessions_cutoff, "gives", count_reaching_outside(signups))
 # TODO: print count_long_bookings(signups, 4) underneath for comparison
+print("count_long_bookings(signups, 4):", count_long_bookings(signups, 4))
 
 # ===== Step 4: Pass the Last Member In and Out, Then Trigger an UnboundLocalError =====
 # The coordinator wants each sign-up printed next to the one before it. The
@@ -215,15 +252,24 @@ sessions_cutoff = 2
 # traceback, answer below, then put a # in front of the line that raises so
 # the steps after it can run.
 
+# Prediction: "previous: nobody yet | this: Nia"
+#             "previous: Nia | this: Omar"
+# Prediction for the broken one: I thought the print would work, since
+# Step 3 read an outside variable with no problem.
+
 def log_signup(record, previous_member):
     # TODO: pull the member name out of `record`
+    member = record.split(",")[0]
     # TODO: print the previous member and this one on one line
+    print("previous:", previous_member, "| this:", member)
     # TODO: return this member's name
-    pass
+    return member
 
 last_member = "nobody yet"
 # TODO: call log_signup on signups[0], then on signups[1], storing
 # what it returns back into last_member each time
+last_member = log_signup(signups[0], last_member)
+last_member = log_signup(signups[1], last_member)
 
 last_seen = "nobody yet"
 
@@ -233,11 +279,13 @@ def log_signup_broken(record):
     last_seen = record.split(",")[0]
     return last_seen
 
-log_signup_broken(signups[2])
+# log_signup_broken(signups[2])
 
 # Your answer:
-#
-#
+# It crashed with UnboundLocalError on last_seen, pointing at the print
+# line. Since the function sets last_seen on the next line, Python decides
+# last_seen belongs to the function the whole time. So when the print
+# tries to use it, it doesn't have a value yet.
 
 # ----- Share Out: Day 2 -----
 # Last 15 minutes, back together as a class. Bring:
@@ -254,8 +302,15 @@ log_signup_broken(signups[2])
 # Be ready to answer "why did you do it that way?"
 
 # Your notes for the share out:
-#
-#
+# I'd trust count_long_bookings, because you can see the 4 right in the
+# call. With count_reaching_outside you can't tell what it's gonna use,
+# and the same exact line gave me 7 and then 11.
+# The rule: if a function sets a variable anywhere inside it, that
+# variable counts as the function's own the whole way through. If you
+# delete the line that sets it, the print works again, because now it's
+# only reading it, so Python looks outside.
+# You don't need global. Just pass it in and return it back out, like
+# log_signup does.
 
 ############################################################################
 #  DAY 3
@@ -280,19 +335,31 @@ log_signup_broken(signups[2])
 # Before you run it, show your partner the line where each of the three
 # functions gets called.
 
+# Prediction: Gwen has Pottery 2 and Swim 6, so 8.
+
 # Three function names. Everything else is yours.
 
 def sessions_in(record):
-    pass
+    return int(record.split(",")[2])
 
 def signups_for(records, member):
-    pass
+    matches = []
+    for record in records:
+        if record.split(",")[0] == member:
+            matches.append(record)
+    return matches
 
 def total_for(records, member):
     # This one should get its work done by calling the other two.
-    pass
+    total = 0
+    for record in signups_for(records, member):
+        total += sessions_in(record)
+    return total
 
 # TODO: print a line per member
+members = ["Nia", "Omar", "Tess", "Rafi", "Gwen"]
+for member in members:
+    print(member, total_for(signups, member))
 
 # ===== Step 6: Run total_for() on Five Inputs Nobody Asked For, Then Judge Each Answer =====
 # No new functions. Call the ones you already have on inputs nobody asked
@@ -318,10 +385,34 @@ def total_for(records, member):
 # asked for, and write a verdict beside each printed result.
 
 # TODO: an empty list
+print("empty list:", total_for([], "Nia"))
+# Verdict: 0, that's right. No records means no sessions.
+
 # TODO: a list holding exactly one record
+print("one record:", total_for([signups[0]], "Nia"))
+# Verdict: 4, that's right. The one record is Nia's Yoga, which is 4.
+
 # TODO: a member name that is not in the file at all
+print("not in file:", total_for(signups, "Marco"))
+# Verdict: 0, but that's kind of lying. Marco isn't even a member, and 0
+# makes it look like he signed up and booked nothing. It should tell you
+# he's not in there.
+
 # TODO: a name that differs from a real member's only by capitalization
+print("wrong case:", total_for(signups, "nia"))
+# Verdict: 0, and that's just wrong. Nia actually has 12. It's checking
+# with ==, which cares about capital letters, so "nia" matches nobody.
+
+print("signups_for empty:", signups_for([], "Nia"))
+# Verdict: [], that's right. Nothing in, nothing out.
+
 # TODO: then: do the per-member totals add up to the whole-file total?
+per_member_sum = 0
+for member in members:
+    per_member_sum += total_for(signups, member)
+print("per-member sum:", per_member_sum, "| whole file:",
+      total_sessions(signups))
+# Both came out to 45, so every session belongs to one of the five people.
 
 # ----- Share Out: Day 3 -----
 # Last 15 minutes, back together as a class. Bring:
@@ -341,5 +432,12 @@ def total_for(records, member):
 # Be ready to answer "why did you do it that way?"
 
 # Your notes for the share out:
-#
-#
+# The weirdest one is "nia" giving 0 when Nia really has 12. If this was
+# real data I'd lowercase both names before comparing, and flag any name
+# that doesn't match anybody.
+# Cross-check: 45 and 45, so it lines up. On a 430-row file I wouldn't
+# type the names out myself. I'd pull the list of names from the data and
+# let the code compare the two totals for me.
+# I did three functions. Each one's small, so it's easy to test by itself,
+# and the int(split) part only lives in one spot instead of being copied
+# all over.
