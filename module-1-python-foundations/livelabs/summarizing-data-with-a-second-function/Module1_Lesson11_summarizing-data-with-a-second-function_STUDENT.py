@@ -28,13 +28,21 @@ fill it in before you run the file again.
 print('----- 1. Step 1: A Formatted Listing -----')
 # TODO: create a list called games of (title, players) tuples:
 # ("Chess", 4), ("Checkers", 6), ("Clue", 1), ("Uno", 8)
-
+games = [
+ ("Chess", 4),
+ ("Checkers", 6),
+ ("Clue", 1),
+ ("Uno", 8)
+ ]
 
 # TODO: define summarize_batch(games) that prints one formatted
 # line per game: "{title}: {players} available"
-
+def summarize_batch(games):
+    for title, players in games:
+        print(f"{title}: {players} available")
 
 # TODO: call summarize_batch(games)
+summarize_batch(games)
 
 # PREDICT before you run: What is the third line this code prints?
 # Your answer:
@@ -51,6 +59,15 @@ print('----- 2. Step 2: Add a Low-Availability Alert -----')
 # TODO: loop over games again; if players < 3, print
 # "  {title} ({players})"
 # TODO: call summarize_batch(games)
+def summarize_batch(games):
+    for title, players in games:
+        print(f"{title}: {players} available")
+    print()
+    print("Low availability:")
+    for title, players in games:
+        if players < 3:
+            print(f"  {title} ({players})")
+summarize_batch(games)
 
 # PREDICT before you run: In the games list, change Uno from 8 to 2. What
 #                         changes in the output?
@@ -66,6 +83,21 @@ print('----- 3. Step 3: Add a Total Count -----')
 # TODO: keep Step 2's listing and alert loops
 # TODO: print a blank line, then f"{len(games)} games total"
 # TODO: call summarize_batch(games)
+def summarize_batch(games):
+    for title, players in games:
+        if players == 0:
+            print(f"{title}: unavailable")
+        else:
+            print(f"{title}: {players} available")
+    print()
+    print("Low availability:")
+    for title, players in games:
+        if players < 3:
+            print(f"  {title} ({players})")
+    print()
+    print(f"{len(games)} games total")
+
+summarize_batch(games)
 
 # PREDICT before you run: Add one more game to the games list, like ("Dice",
 #                         5). What prints last?

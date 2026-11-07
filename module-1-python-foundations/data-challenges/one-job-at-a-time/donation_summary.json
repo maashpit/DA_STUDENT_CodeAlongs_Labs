@@ -1,0 +1,46 @@
+{
+  "records": 17,
+  "total_pounds": 300.0,
+  "by_day": {
+    "2026-09-01": {
+      "donations": 2,
+      "pounds": 43.0
+    },
+    "2026-09-02": {
+      "donations": 2,
+      "pounds": 42.0
+    },
+    "2026-09-03": {
+      "donations": 2,
+      "pounds": 23.0
+    },
+    "2026-09-04": {
+      "donations": 2,
+      "pounds": 28.0
+    },
+    "2026-09-05": {
+      "donations": 1,
+      "pounds": 40.0
+    },
+    "2026-09-06": {
+      "donations": 2,
+      "pounds": 26.0
+    },
+    "2026-09-07": {
+      "donations": 1,
+      "pounds": 20.0
+    },
+    "2026-09-08": {
+      "donations": 2,
+      "pounds": 36.0
+    },
+    "2026-09-09": {
+      "donations": 1,
+      "pounds": 9.0
+    },
+    "2026-09-10": {
+      "donations": 2,
+      "pounds": 33.0
+    }
+  }
+}
