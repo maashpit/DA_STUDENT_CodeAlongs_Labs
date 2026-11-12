@@ -5,17 +5,20 @@
 # Build a list of order IDs, add one, rename the first, and print the results.
 print('----- 1. Lists Let You Change Anything, Anytime -----')
 # TODO: create a list called pending_orders
+pending_orders = []
 # TODO: put "ORD-1001", "ORD-1002" and "ORD-1003" in it
-
+pending_orders = ["ORD-1001", "ORD-1002", "ORD-1003""]
 
 # TODO: append "ORD-1004" to pending_orders
-
+pending_orders.append("ORD-1004")
 
 # TODO: change pending_orders[0] to "ORD-1001-R" (lists are mutable)
-
+pending_orders[0] = "ORD-1001-R"
 
 # TODO: print pending_orders, its length, and its last item (use [-1])
-
+print(pending_orders)
+print(len(pending_orders))
+pring(pending_orders[-1])
 
 # ===== 2. Once Locked In, a Tuple Can't Be Changed =====
 # Store a log entry in a tuple, unpack it, then try to change it.
@@ -23,13 +26,13 @@ print('----- 1. Lists Let You Change Anything, Anytime -----')
 print("----- 2. Once Locked In, a Tuple Can't Be Changed -----")
 # TODO: create a tuple called log_entry: timestamp, level, status code
 # TODO: use any timestamp string, "ERROR" and 500
-
+log_entry = ("11-9-2026 12:00", "ERROR", 500)
 
 # TODO: unpack log_entry into timestamp, level, status
-
+timestamp, level, status = log_entry
 
 # TODO: print an f-string showing level, timestamp, and status
-
+print(f"[{level}] {timestamp} - status{status}")
 
 # TODO: try log_entry[0] = a new timestamp (this SHOULD raise an error)
 
@@ -53,13 +56,14 @@ print('----- 4. Sets Make Membership Checks Instant -----')
 
 
 # TODO: add 102 again - what happens? (sets have no duplicates)
-
+seen_ids = seen_ids.add(102)
 
 # TODO: add a new id, 104
-
+seen_ids = seen_ids.add(104)
 
 # TODO: print seen_ids, then check if 103 is in seen_ids
-
+print(seen_ids)
+print(103 in seen_ids)
 
 # ===== 5. The Cost of Checking a List Adds Up =====
 # This code times a search for one number in a list of 2 million numbers.

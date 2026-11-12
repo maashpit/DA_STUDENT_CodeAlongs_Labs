@@ -45,9 +45,19 @@ print('----- 2. Step 1: Add __str__ -----')
 # TODO: keep __init__ from before
 # TODO: add __str__(self) that returns
 # f"{self.title}, {self.players_available} left"
-
+class BoardGame:
+    def __init__(self, title, players_available, category):
+        self.title = title
+        self.players_available = players_available
+        self.category = category
+    def __str__(self):
+        return f"{self.title}, {self.players_available} left"
 
 # TODO: create connect4 again, then print(connect4)
+
+connect4 = BoardGame("Connect Four", 4, "Strategy")
+print(connect4)
+
 
 # DISCUSS: The Step 1 code never calls __str__ by name. So why did
 #          print(connect4) change? Talk it over with your partner.
