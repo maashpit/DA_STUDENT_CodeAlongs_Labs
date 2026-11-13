@@ -33,13 +33,18 @@ SUBMIT
 # lecture, and not one of the project's own 4 scenarios.
 
 # Your answer:
-#
+# The volunteer coordinator at the community tool library needs to know the name of each tool, 
+# how many are available, and whether it needs a safety check or not. 
 #
 
 # ===== Step 2: Decide Your Attributes, Each With a Reason From the Scenario =====
 
 # Your answer:
-#
+# tool_name       -> "What the tool is."
+# available_count -> "How many are free to borrow right now."
+# is_power_tool   -> "Power tools need a quick inspection after every use."
+#                    I store whether it's a power tool, and a method will
+#                    decide if it needs a safety check.
 #
 
 # ===== Step 3: Write __init__ and a Method, From Scratch =====
@@ -49,18 +54,60 @@ SUBMIT
 # paragraph.
 
 # TODO: Write __init__ and a Method, From Scratch
+class CommunityTool:
+    def __init__(self, tool_name, available_count, is_power_tool):
+        self.tool_name = tool_name
+        self.available_count = available_count
+        self.is_power_tool = is_power_tool
+    
+    def tools_available(self):
+        return self.available_count > 0
+
+    def needs_safety_check(self):
+        if self.is_power_tool:
+            return True
+        else:
+            return False 
+
 
 # ===== Step 4: Instantiate 2+ Objects, Confirm Independent Storage =====
 # The same proof Day 13's lecture asked for, now on a class you designed
 # yourself. Predict what each print() will show before you run it.
 
 # TODO: Instantiate 2+ Objects, Confirm Independent Storage
+drill = CommunityTool("Drill", 5, True)
+hammer = CommunityTool("Hammer", 8, False)
+ladder = CommunityTool("Ladder", 3, False)
+hand_saw = CommunityTool("Hand_Saw", 4, False)
+chainsaw = CommunityTool("Chainsaw", 1, True)
+
+tools = [drill, hammer, ladder, hand_saw, chainsaw]
+for tool in tools:
+    print(tool.tool_name, tool.available_count, tool.needs_safety_check())
+
+# Independence test: change only the chainsaw
+# Prediction: chainsaw -> 0, drill -> 5 (unchanged)
+chainsaw.available_count = 0
+print(chainsaw.tool_name, chainsaw.available_count, chainsaw.tools_available())
+print(drill.tool_name, drill.available_count, drill.tools_available())
+
+# Predictions:
+# drill.needs_safety_check()  -> True
+# ladder.needs_safety_check() -> False
+# drill.available_count()     -> 5
 
 # ===== Step 5: Justify Your Design Choice in 2-3 Sentences =====
 
 # Your answer:
-#
-#
+# I gave CommunityTool three attributes because the volunteer coordinator asked
+# for three things: tool_name (what the tool is), available_count (how many are
+# free to borrow right now), and is_power_tool (whether it needs a safety check).
+# I stored is_power_tool instead of needs_safety_check because the coordinator said
+# power tools need an inspection after every use, so knowing it is a power tool
+# is enough to know it needs a check.
+# My two methods answer the coordinator's questions: tools_available() says whether
+# at least one is free right now, and needs_safety_check() says whether the tool
+# must be inspected before it goes out again.
 
 # ----- Share Out -----
 # Last 15 minutes, back together as a class. Bring:
@@ -82,5 +129,8 @@ SUBMIT
 # Be ready to answer "why did you do it that way?"
 
 # Your notes for the share out:
-#
-#
+# I initially thought about making a needs_safety_check attribute but I decided to pivot
+# and use it as a method instead. It would just repeat is_power_tool since every power 
+# tool needs a check. 
+# I also was going to use tool_inventory to represent the count at first but rejected it because
+# the coordinator asks how many are free right now, not how many the community center owns. 
