@@ -28,10 +28,24 @@ print('----- 1. Setup: A Class and Its Objects -----')
 # TODO: define SupplyItem with __init__ storing name, count,
 # department
 
+class SupplyItem:
+    def __init__(self, name, count, department):
+        self.name = name
+        self.count = count
+        self.department = department
+
 
 # TODO: create a list called supplies with 4 SupplyItem objects
 # of your own choosing
+supplies = [
+    SupplyItem("Paint",20, "Art"),
+    SupplyItem("Pens", 30, "Office"),
+    SupplyItem("Mouse", 6, "Computer"),
+    SupplyItem("Scissors", 9, "Art")
+             ]
 
+for self in supplies: 
+    print(self.name, self.count, self.department)
 
 # ===== 2. Search 1: Linear Scan =====
 # Write a function that checks each item one at a time until it finds the one
@@ -40,8 +54,14 @@ print('----- 2. Search 1: Linear Scan -----')
 # TODO: define find_by_name_linear(supplies, name) that loops over
 # supplies and returns the item whose .name matches, or None if
 # nothing matches
+def find_by_name_linear(supplies,name):
+    for item in supplies:
+        if item.name == name:
+            return item
+    return None
 
-
+found = find_by_name_linear(supplies,"Scissors")
+print(found.name, found.count)
 # TODO: call it looking for "Tape", then print the result's name
 # and count
 
@@ -59,6 +79,14 @@ print('----- 2. Search 1: Linear Scan -----')
 print('----- 3. Search 2: Dict-Keyed Lookup -----')
 # TODO: build supplies_by_name as a dict comprehension keyed by
 # each item's .name, valued as the item itself
+
+supplies_by_name = {
+    item.name: item for item in supplies 
+}
+found = supplies_by_name.get("Scissors")
+print(found.name, found.count)
+
+print(supplies_by_name.get("Nope"))
 
 
 # TODO: look up "Tape" with .get(), then print its name and count

@@ -72,6 +72,15 @@ print(connect4)
 print('----- 3. Step 2: Add __repr__ Too -----')
 # TODO: keep __init__ and __str__ from Step 1
 # TODO: add __repr__(self) that returns f"BoardGame('{self.title}')"
+class BoardGame:
+    def __init__(self, title, players_available, category):
+        self.title = title
+        self.players_available = players_available
+        self.category = category
+    def __str__(self):
+        return f"{self.title}, {self.players_available} left"
+    def __repr(self):
+        return f"BoardGame('{self.title}')"
 
 
 # ===== 4. Now Test repr() =====
