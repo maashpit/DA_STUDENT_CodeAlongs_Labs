@@ -12,28 +12,81 @@ You've just joined a data team, and someone drops `data/energy_sample.csv` in yo
 
 ## Your Objectives
 
-- **Open the Raw File Before You Classify a Single Column**
-  - *Same lab dataset from DATASET.md — a different file than the project's own co2-data, on purpose. Run every command from the module folder, so `data/energy_sample.csv` resolves.*
+### 1. Open the Raw File Before You Classify a Single Column
 
-- **Preview Every Column's Actual Values — All Seven, Not Just the First Few**
-  - *Hint: `cut` is new. It pulls specific columns out of a line: `-d,` says the columns are separated by commas, and `-f` says which ones you want.*
+*Same lab dataset from DATASET.md — a different file than the project's own co2-data, on purpose. Run every command from the module folder, so `data/energy_sample.csv` resolves.*
 
-- **Classify All Seven Columns, Each With a Reason Drawn From the Data**
+```bash
+head data/energy_sample.csv
+```
 
-- **Confirm How Many Rows and How Many Countries You Actually Have**
-  - *Hint: `sort` and `uniq -c` are new, and they work together: `uniq -c` counts repeats, but only ones sitting next to each other, so the values have to be sorted first.*
+The dataset contains energy information for 10 countries from 2015 to 2021, including population, energy per capita, and fossil fuel and renewable energy shares.
 
-- **Check Whether Every Country Reports Every Column — Then Name Two Collection Concerns**
+### 2. Preview Every Column's Actual Values — All Seven, Not Just the First Few
+
+*Hint: `cut` is new. It pulls specific columns out of a line: `-d,` says the columns are separated by commas, and `-f` says which ones you want.*
+
+```bash
+for i in 1 2 3 4 5 6 7; do
+    cut -d, -f"$i" data/energy_sample.csv
+done
+```
+
+### 3. Classify All Seven Columns, Each With a Reason Drawn From the Data
+
+| Column | Type | Reason |
+|---|---|---|
+| country | Categorical | Country names like Nigeria and Brazil |
+| year | Temporal / Discrete | Years from 2015–2021 |
+| iso_code | Categorical | Country identifiers like NGA and BRA |
+| population | Numerical / Discrete | Whole-number population counts |
+| energy_per_capita | Numerical / Continuous | Decimal values measuring energy per person |
+| fossil_share_energy | Numerical / Continuous | Percentages of fossil fuel energy |
+| renewables_share_energy | Numerical / Continuous | Percentages of renewable energy |
+
+### 4. Confirm How Many Rows and How Many Countries You Actually Have
+
+*Hint: `sort` and `uniq -c` work together: `uniq -c` counts repeats, but only ones sitting next to each other, so the values have to be sorted first.*
+
+```bash
+wc -l data/energy_sample.csv
+
+tail -n +2 data/energy_sample.csv | cut -d, -f1 | sort | uniq -c
+```
+
+The dataset contains **70 data rows, 10 countries, and 7 years per country**.
+
+### 5. Check Whether Every Country Reports Every Column — Then Name Two Collection Concerns
+
+I personally used `grep` to narrow down to specific countries and check their respective columns.
+
+```bash
+grep "Nigeria," data/energy_sample.csv
+grep "Kenya," data/energy_sample.csv
+```
+
+I found that Nigeria and Kenya were missing both fossil fuel and renewable energy shares for all seven years, totaling 14 rows with missing energy share data.
+
+**Concern 1 — Missing Data:** Nigeria has a population of over 218 million in 2021 but no reported renewable energy share. Why is this information missing, and does it affect our comparisons?
+
+**Concern 2 — Reporting Consistency:** Fossil fuel and renewable shares don't always add up to 100%. This makes me question what other energy sources are included and whether countries are reporting consistently.
 
 ## Share Out
 
-Two questions, in this order. First: how did your group figure out whether every country reports every column? Different groups almost certainly took different routes to the same file — compare them before deciding which you'd reach for next time. Second: which collection concerns did your group flag, and which single data-quality question did you sharpen out of them? Put each group's question up where everyone can read it, then ask the class which ones a real analyst could actually go answer — and which ones sound serious but can't be checked.
+*First: how did your group figure out whether every country reports every column? Compare the different approaches.*
 
-I want to see the relationship between fossil share energy and renewable energy share. Theres a definite connection?
-To answer the first question, figuring out if every country reports every column wasn't too difficult I can sort the data by the column and see if the country has the respective data point 
-I personally used grep to narrow down to a specifc country and went through the different columns that grep gave me
+*Second: which collection concerns did your group flag, and which single data-quality question did you sharpen out of them?*
 
-I think it was interesting seeing the comparison in countries that have a large population and their respective energy share whether it be fossil fuels or renewable. Nigeria has no renewable energy data even though they have a sizeable population. I want to see the relationship between fossil share energy and renewable energy share. Theres a definite connection with the population
+### 1. How did you check the columns?
 
-What this data set shows but doesnt explicitly state is the connection to the average household income of each country. We have energy per capita but we need to see how much each household on average is making, I think thats a really important insight to show the comparison of the development of these countries in context of how much and what kinds of energy they use. 
+Figuring out whether every country reports every column wasn't too difficult. I could use `cut` and `sort` to examine the data, but I personally used `grep` to narrow it down to specific countries and check their values. This is how I noticed the missing data for Nigeria and Kenya.
 
+### 2. What concerns and questions came up?
+
+I thought it was interesting comparing countries with large populations and their respective energy shares, whether fossil fuels or renewables. I want to investigate whether population has any relationship with a country's energy mix.
+
+What this dataset doesn't explicitly show is the connection to average household income. We have energy per capita, but knowing how much the average household earns would provide important context about a country's development and energy consumption.
+
+**My Data-Quality Question:**
+
+Why are fossil fuel and renewable energy shares missing for Nigeria and Kenya across all seven years, and were their energy statistics collected using the same methods as the other countries?
