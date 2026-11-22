@@ -58,8 +58,7 @@ for emp_id in staff:
     hours = weekly_hours(lines, emp_id)
     days = days_worked(lines, emp_id)
     print(emp_id, "| hours:", hours, "| days:", days,
-          "| average per day:", hours / days)
-
+          "| average per day:", hours)
 # Step 2, answer 1:
 #
 # Step 2, answer 2:
