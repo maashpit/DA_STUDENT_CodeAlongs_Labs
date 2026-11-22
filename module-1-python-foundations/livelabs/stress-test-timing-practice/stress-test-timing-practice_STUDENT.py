@@ -35,21 +35,40 @@ SUBMIT
 import random  # Python's built-in module for random values
 
 # TODO: paste your class here (or the sample LibraryTool from the slides)
+class LibraryTool:
+    def __init__(self, tool_name, quantity_available, requires_inspection):
+        self.tool_name = tool_name
+        self.quantity_available = quantity_available
+        self.requires_inspection = requires_inspection
 
+    def is_available(self):
+        return self.quantity_available > 0
 
 def make_batch(size):
     # TODO: make an empty list called batch
+    tools = []
     # TODO: loop `size` times with: for i in range(size):
+    for i in range(size):
+        tool = LibraryTool(f"Tool{i}",random.randint(0,5),False)
+        tools.append(tool)
+    return tools
     # TODO: inside the loop, create one object and append it to batch
     # TODO: give each object a unique name, e.g. f"Tool{i}"
     # TODO: use random.randint(0, 5) for any number attribute
     # TODO: after the loop, return batch
-    pass
+    
 
 
 # TODO: small_batch = make_batch(10)
 # TODO: make medium_batch (1,000) and large_batch (100,000) the same way
 # TODO: print len() of all three batches to check their sizes
+small_batch = make_batch(10)
+medium_batch = make_batch(1000)
+large_batch = make_batch(100000)
+
+print(len(small_batch))
+print(len(medium_batch))
+print(len(large_batch))
 
 # ===== Step 2: Write Two Searches Over That Batch - a Linear Scan and a Dict Lookup - and Confirm They Agree =====
 # Same two functions Day 16's lecture wrote over SupplyItem - now over your
@@ -59,13 +78,21 @@ def find_by_name_linear(batch, name):
     # TODO: loop over batch, one object at a time
     # TODO: if the object's name equals name, return the object
     # TODO: after the loop, return None (nothing matched)
-    pass
+    for tool in batch:
+        if tool.tool_name == name:
+            return tool
+    return None
 
 
-def build_lookup(batch):
+def build_lookup(tools):
     # TODO: return a dict: {obj.name: obj for obj in batch}
     # TODO: (use your class's real name attribute, e.g. tool_name)
-    pass
+    return{tool.tool_name: tool for tool in tools}
+
+lookup = build_lookup(large_batch)
+
+print(find_by_name_linear(large_batch, "Tool99999").tool_name)
+print(lookup.get("Tool99999").tool_name)
 
 
 # TODO: lookup = build_lookup(large_batch)
@@ -94,11 +121,32 @@ import time  # Python's built-in module; time.perf_counter() is new
 # TODO: search for "NotThere" on purpose: a missing name is the worst case
 # TODO: 1.5e-06 in your output means 0.0000015 seconds
 
+import time
+
+pairs = [
+    (10, small_batch),
+    (1000, medium_batch),
+    (100000, large_batch),
+    ]
+
+for size, batch in pairs:
+    lookup = build_lookup(batch)
+    start = time.perf_counter()
+    find_by_name_linear(batch, "NotThere")
+    linear_time = time.perf_counter() - start
+
+    start = time.perf_counter()
+    lookup.get("NotThere")
+    dict_time = time.perf_counter() - start
+
+    print(size, linear_time, dict_time)
+
 # ===== Step 4: Answer Your Manager's Question in One Sentence, in Big-O Terms =====
 
 # Your answer:
-#
-#
+# A linear search is O(n) because it may check every object,
+# while a dictionary lookup is O(1) on average because it
+# can find an object directly using its key.
 
 # ===== Step 5: Optional Stretch: Ask an AI How to Speed Up Your Linear Scan, Then Make It Prove It =====
 # Stretch work only - beyond the core lab budget. Take it if you finish
@@ -107,8 +155,47 @@ import time  # Python's built-in module; time.perf_counter() is new
 # chatbot fact claim.
 
 # Your answer:
-#
-#
+# I asked AI how to make my linear search faster.
+# It suggested using a dictionary instead of searching one by one.
+# I wanted to test if the difference was actually noticeable.
+# I also included the time it takes to build the dictionary.
+
+# Test 100 searches using the large batch
+searches = 100
+
+start = time.perf_counter()
+
+for i in range(searches):
+    find_by_name_linear(large_batch, "NotThere")
+
+linear_time = time.perf_counter() - start
+
+
+# Test the dictionary, including the time to build it
+start = time.perf_counter()
+
+lookup = build_lookup(large_batch)
+
+for i in range(searches):
+    lookup.get("NotThere")
+
+dict_time = time.perf_counter() - start
+
+
+print("Linear search time:", linear_time)
+print("Dictionary total time:", dict_time)
+
+if dict_time < linear_time:
+    print("AI suggestion was faster in this test.")
+else:
+    print("AI suggestion was not faster in this test.")
+
+
+# Conclusion:
+# Both methods can find the same information.
+# The dictionary has an upfront cost, but it can save time when
+# searching repeatedly because it doesn't check every object.
+# My results above show whether AI's suggestion held up.
 
 # ----- Share Out -----
 # Last 15 minutes, back together as a class. Bring:
@@ -132,5 +219,7 @@ import time  # Python's built-in module; time.perf_counter() is new
 # Be ready to answer "why did you do it that way?"
 
 # Your notes for the share out:
-#
-#
+# As the batch size increased, the linear search took longer.
+# The dictionary lookup stayed relatively consistent.
+# This is because a linear search checks objects one at a time,
+# while the dictionary uses a key to find what it's looking for.
